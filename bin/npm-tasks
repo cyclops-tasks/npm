@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 require("cyclops")
-  .runFromBin()
+  .run({ task: "npm" })
   .catch(function(e) {
     console.error(e)
     process.exit(1)
