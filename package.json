@@ -26,7 +26,7 @@
   },
   "main": "dist/npm.js",
   "bin": {
-    "npm": "./bin/npm"
+    "npm-tasks": "./bin/npm-tasks"
   },
   "license": "MIT",
   "homepage": "https://github.com/cyclops-tasks/npm#readme",
