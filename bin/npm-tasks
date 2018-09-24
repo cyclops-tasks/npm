@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
 require("cyclops")
-  .run({ task: "npm" })
+  .composeStore()
+  .cyclops({
+    argv: process.argv.slice(2),
+    path: process.cwd(),
+    task: "npm",
+  })
   .catch(function(e) {
     console.error(e)
     process.exit(1)
