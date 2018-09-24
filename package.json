@@ -28,11 +28,14 @@
   "bin": {
     "npm-tasks": "./bin/npm-tasks"
   },
+  "links": {
+    "cyclops": "../cyclops"
+  },
   "license": "MIT",
   "homepage": "https://github.com/cyclops-tasks/npm#readme",
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "cyclops": "0.0.7"
+    "cyclops": "^0.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
