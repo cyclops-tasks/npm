@@ -34,14 +34,14 @@
   "license": "MIT",
   "homepage": "https://github.com/cyclops-tasks/npm#readme",
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
-    "cyclops": "^0.1.0"
+    "@babel/runtime": "^7.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-react-jsx": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
@@ -71,7 +71,13 @@
     "plugins": [
       "@babel/plugin-proposal-class-properties",
       "@babel/plugin-proposal-object-rest-spread",
-      "@babel/plugin-transform-runtime"
+      "@babel/plugin-transform-runtime",
+      [
+        "@babel/plugin-transform-react-jsx",
+        {
+          "pragma": "h"
+        }
+      ]
     ]
   },
   "scripts": {
@@ -131,6 +137,13 @@
             "warn",
             "error"
           ]
+        }
+      ],
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "h",
+          "varsIgnorePattern": "h"
         }
       ],
       "quotes": [
