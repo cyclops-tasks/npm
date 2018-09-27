@@ -29,12 +29,14 @@
     "npm-tasks": "./bin/npm-tasks"
   },
   "links": {
-    "cyclops": "../cyclops"
+    "@dot-store/spawn": "../dot-store-spawn",
+    "dot-store": "../../dot-store-core"
   },
   "license": "MIT",
   "homepage": "https://github.com/cyclops-tasks/npm#readme",
   "dependencies": {
     "@babel/runtime": "^7.0.0",
+    "@dot-store/spawn": "^1.1.0",
     "fs-extra": "^7.0.0",
     "toposort": "^2.0.2"
   },
