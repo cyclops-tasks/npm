@@ -8,24 +8,24 @@ beforeEach(async () => {
 
   await store.set("argv", { _: ["npm-tasks"], all: true })
 
-  await store.set("tasks.project-a", {
+  const baseOptions = {
     gitBehind: { out: "" },
     gitDirty: { code: 0 },
-    projectPkgPath: `${__dirname}/fixture/project-a/package.json`,
     taskCount: 2,
-    taskId: "project-a",
     taskIndex: 0,
+  }
+
+  await store.set("tasks.project-a", {
+    projectPkgPath: `${__dirname}/fixture/project-a/package.json`,
+    taskId: "project-a",
     taskLeader: true,
+    ...baseOptions,
   })
 
   await store.set("tasks.project-b", {
-    gitBehind: { out: "" },
-    gitDirty: { code: 0 },
     projectPkgPath: `${__dirname}/fixture/project-b/package.json`,
-    taskCount: 2,
     taskId: "project-b",
-    taskIndex: 0,
-    taskLeader: false,
+    ...baseOptions,
   })
 
   store
