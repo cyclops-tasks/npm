@@ -16,6 +16,7 @@ beforeEach(async () => {
   }
 
   await store.set("tasks.project-a", {
+    projectPath: `${__dirname}/fixture/project-a`,
     projectPkgPath: `${__dirname}/fixture/project-a/package.json`,
     taskId: "project-a",
     taskLeader: true,
@@ -23,6 +24,7 @@ beforeEach(async () => {
   })
 
   await store.set("tasks.project-b", {
+    projectPath: `${__dirname}/fixture/project-b`,
     projectPkgPath: `${__dirname}/fixture/project-b/package.json`,
     taskId: "project-b",
     ...baseOptions,
@@ -89,6 +91,31 @@ describe("match", () => {
       name: "project-b",
       version: "0.0.1",
     })
+  })
+
+  test("spawns npm install", async () => {
+    const spawns = []
+
+    store
+      .before()
+      .withOp("spawn")
+      .onAny(({ event }) => {
+        spawns.push(event.args)
+      })
+
+    await run("match")
+
+    expect(spawns).toContainEqual([
+      "npm",
+      "install",
+      { cwd: `${__dirname}/fixture/project-a` },
+    ])
+
+    expect(spawns).toContainEqual([
+      "npm",
+      "install",
+      { cwd: `${__dirname}/fixture/project-b` },
+    ])
   })
 })
 
