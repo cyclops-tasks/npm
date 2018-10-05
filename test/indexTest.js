@@ -1,12 +1,12 @@
 import storeComposer from "dot-store"
-import npmTaskComposer from "../dist/npm"
+import pkgComposer from "../dist/pkg"
 
 let store
 
 beforeEach(async () => {
-  store = npmTaskComposer(storeComposer())
+  store = pkgComposer(storeComposer())
 
-  await store.set("argv", { _: ["npm-tasks"], all: true })
+  await store.set("argv", { _: ["pkg"], all: true })
 
   const baseOptions = {
     gitBehind: { out: "" },
@@ -40,7 +40,7 @@ beforeEach(async () => {
 
 async function run(option = "all") {
   await store.set("argv", {
-    _: ["npm-tasks"],
+    _: ["pkg"],
     [option]: true,
   })
 

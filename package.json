@@ -1,5 +1,5 @@
 {
-  "name": "@cyclops-tasks/npm",
+  "name": "pkg-tasks",
   "starters": [
     "basics",
     "babel",
@@ -12,21 +12,22 @@
     "jest-scripts",
     "watchman-babel"
   ],
-  "version": "0.2.1",
-  "description": "Npm tasks",
+  "version": "0.1.0",
+  "description": "Package management tasks",
   "keywords": [
     "cyclops",
     "npm",
+    "package",
     "tasks"
   ],
   "author": "cyclops <oss@cyclo.ps>",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/cyclops-tasks/npm.git"
+    "url": "git+ssh://git@github.com/cyclops-tasks/pkg.git"
   },
-  "main": "dist/npm.js",
+  "main": "dist/pkg.js",
   "bin": {
-    "npm-tasks": "./bin/npm-tasks"
+    "pkg": "./bin/pkg"
   },
   "links": {
     "@dot-store/spawn": "../dot-store-spawn",
@@ -51,7 +52,7 @@
     "@babel/preset-env": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^9.0.0",
-    "dot-store": "^4.8.0",
+    "dot-store": "^4.9.0",
     "eslint": "^5.6.0",
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-prettier": "^2.6.2",
