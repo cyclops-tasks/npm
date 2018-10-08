@@ -1,4 +1,4 @@
-# pkg
+# pkg-tasks
 
 Package management tasks.
 
@@ -6,5 +6,5 @@ Package management tasks.
 
 ```bash
 npm install --save pkg-tasks
-pkg
+pkg-tasks
 ```

@@ -11,9 +11,10 @@ beforeEach(async () => {
   const baseOptions = {
     gitBehind: { out: "" },
     gitDirty: { code: 0 },
-    taskCount: 2,
     taskIndex: 0,
   }
+
+  await store.set("taskCount", 2)
 
   await store.set("tasks.project-a", {
     projectPath: `${__dirname}/fixture/project-a`,
@@ -59,10 +60,11 @@ describe("all", () => {
     await run()
 
     expect(store.state.wait).toEqual({
-      addDeps: 2,
-      bump: 2,
-      init: 2,
-      syncDeps: 2,
+      "Bump publish versions": 2,
+      "Find highest versions": 2,
+      "Match versions and install": 2,
+      "Match versions and publish": 2,
+      "Read package json": 2,
     })
   })
 })
