@@ -59,7 +59,7 @@ describe("all", () => {
   test("waits for all steps", async () => {
     await run()
 
-    expect(store.state.wait).toEqual({
+    expect(store.state.phase).toEqual({
       "Bump publish versions": 2,
       "Find highest versions": 2,
       "Match versions and install": 2,
