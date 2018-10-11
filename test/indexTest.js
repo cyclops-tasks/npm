@@ -1,17 +1,20 @@
-import storeComposer from "dot-store"
-import pkgComposer from "../dist/pkg"
+import dotEvent from "dot-event"
+import dotStore from "dot-store"
+import pkg from "../dist/pkg"
 
-let store
+let events, store
 
 beforeEach(async () => {
-  store = pkgComposer(storeComposer())
+  events = dotEvent()
+  store = dotStore(events)
+
+  pkg({ events, store })
 
   await store.set("argv", { _: ["pkg"], all: true })
 
-  const baseOptions = {
+  const spawn = {
     gitBehind: { out: "" },
     gitDirty: { code: 0 },
-    taskIndex: 0,
   }
 
   await store.set("taskCount", 2)
@@ -20,23 +23,23 @@ beforeEach(async () => {
     projectPath: `${__dirname}/fixture/project-a`,
     projectPkgPath: `${__dirname}/fixture/project-a/package.json`,
     taskId: "project-a",
+    taskIndex: 0,
     taskLeader: true,
-    ...baseOptions,
   })
 
   await store.set("tasks.project-b", {
     projectPath: `${__dirname}/fixture/project-b`,
     projectPkgPath: `${__dirname}/fixture/project-b/package.json`,
     taskId: "project-b",
-    ...baseOptions,
+    taskIndex: 0,
   })
 
-  store
-    .before()
-    .withOp("spawn")
-    .onAny(({ event }) => {
-      event.signal.cancel = true
-    })
+  await store.set("spawn.project-a", spawn)
+  await store.set("spawn.project-b", spawn)
+
+  events.onAny("before.spawn", ({ event }) => {
+    event.signal.cancel = true
+  })
 })
 
 async function run(option = "all") {
@@ -46,12 +49,8 @@ async function run(option = "all") {
   })
 
   await Promise.all([
-    store
-      .withOptions({ taskId: "project-a" })
-      .emit("startTask"),
-    store
-      .withOptions({ taskId: "project-b" })
-      .emit("startTask"),
+    events.emit("startTask", { taskId: "project-a" }),
+    events.emit("startTask", { taskId: "project-b" }),
   ])
 }
 
@@ -73,9 +72,9 @@ describe("match", () => {
   test("upgrades shared package to highest version", async () => {
     const args = []
 
-    store.on("writeJson", ({ event }) =>
-      args.push(event.args[1])
-    )
+    events.on("emit.writeJson", ({ event }) => {
+      args.push(event.args[0].json)
+    })
 
     await run("match")
 
@@ -98,12 +97,9 @@ describe("match", () => {
   test("spawns npm install", async () => {
     const spawns = []
 
-    store
-      .before()
-      .withOp("spawn")
-      .onAny(({ event }) => {
-        spawns.push(event.args)
-      })
+    events.onAny("before.spawn", ({ event }) => {
+      spawns.push(event.args)
+    })
 
     await run("match")
 
@@ -125,8 +121,8 @@ describe("publish", () => {
   test("bumps versions", async () => {
     const args = []
 
-    store.on("writeJson", ({ event }) =>
-      args.push(event.args[1])
+    events.on("emit.writeJson", ({ event }) =>
+      args.push(event.args[0].json)
     )
 
     await run("publish")
