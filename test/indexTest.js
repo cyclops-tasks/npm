@@ -37,8 +37,12 @@ beforeEach(async () => {
   await store.set("spawn.project-a", spawn)
   await store.set("spawn.project-b", spawn)
 
-  events.onAny("before.spawn", ({ event }) => {
-    event.signal.cancel = true
+  const cancelEvent = ({ event }) =>
+    (event.signal.cancel = true)
+
+  events.onAny({
+    "before.fs.writeJson": cancelEvent,
+    "before.spawn": cancelEvent,
   })
 })
 
@@ -72,9 +76,12 @@ describe("match", () => {
   test("upgrades shared package to highest version", async () => {
     const args = []
 
-    events.on("emit.writeJson", ({ event }) => {
-      args.push(event.args[0].json)
-    })
+    events.on(
+      "before.fs.writeJson.{taskId}",
+      ({ event }) => {
+        args.push(event.args[0].json)
+      }
+    )
 
     await run("match")
 
@@ -104,15 +111,19 @@ describe("match", () => {
     await run("match")
 
     expect(spawns).toContainEqual([
-      "npm",
-      "install",
-      { cwd: `${__dirname}/fixture/project-a` },
+      {
+        args: ["install"],
+        command: "npm",
+        options: { cwd: `${__dirname}/fixture/project-a` },
+      },
     ])
 
     expect(spawns).toContainEqual([
-      "npm",
-      "install",
-      { cwd: `${__dirname}/fixture/project-b` },
+      {
+        args: ["install"],
+        command: "npm",
+        options: { cwd: `${__dirname}/fixture/project-b` },
+      },
     ])
   })
 })
@@ -121,7 +132,7 @@ describe("publish", () => {
   test("bumps versions", async () => {
     const args = []
 
-    events.on("emit.writeJson", ({ event }) =>
+    events.on("before.fs.writeJson.{taskId}", ({ event }) =>
       args.push(event.args[0].json)
     )
 
