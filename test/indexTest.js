@@ -63,11 +63,26 @@ describe("all", () => {
     await run()
 
     expect(store.state.phase).toEqual({
-      "Bump publish versions": 2,
-      "Find highest versions": 2,
-      "Match versions and install": 2,
-      "Match versions and publish": 2,
-      "Read package json": 2,
+      bumpPublishVersions: {
+        count: 2,
+        title: "Bump publish versions",
+      },
+      findHighestVersions: {
+        count: 2,
+        title: "Find highest versions",
+      },
+      matchVersionsAndInstall: {
+        count: 2,
+        title: "Match versions and install",
+      },
+      matchVersionsAndPublish: {
+        count: 2,
+        title: "Match versions and publish",
+      },
+      readPackageJson: {
+        count: 2,
+        title: "Read package json",
+      },
     })
   })
 })
