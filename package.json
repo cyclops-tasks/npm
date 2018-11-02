@@ -39,8 +39,9 @@
   "dependencies": {
     "@babel/runtime": "^7.1.2",
     "@dot-store/fs": "^1.4.0",
-    "@dot-store/log": "^0.3.0",
+    "@dot-store/log": "^0.5.0",
     "@dot-store/spawn": "^2.2.0",
+    "cyclops": "^1.2.0",
     "dot-event": "^2.7.0",
     "dot-store": "^5.4.0",
     "fs-extra": "^7.0.0",
