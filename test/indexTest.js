@@ -1,6 +1,6 @@
 import dotEvent from "dot-event"
 import dotStore from "dot-store"
-import pkg from "../dist/pkg"
+import version from "../dist/version"
 
 let events, store
 
@@ -8,9 +8,9 @@ beforeEach(async () => {
   events = dotEvent()
   store = dotStore(events)
 
-  pkg({ events, store })
+  version({ events, store })
 
-  await store.set("argv", { _: ["pkg"], all: true })
+  await store.set("argv", { _: ["version"], all: true })
 
   const spawn = {
     gitBehind: { out: "" },
@@ -48,7 +48,7 @@ beforeEach(async () => {
 
 async function run(option = "all") {
   await store.set("argv", {
-    _: ["pkg"],
+    _: ["version"],
     [option]: true,
   })
 

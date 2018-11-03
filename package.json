@@ -1,5 +1,5 @@
 {
-  "name": "pkg-tasks",
+  "name": "version-tasks",
   "starters": [
     "basics",
     "babel",
@@ -13,21 +13,21 @@
     "watchman-babel"
   ],
   "version": "0.2.0",
-  "description": "Package management tasks",
+  "description": "Npm versioning tasks",
   "keywords": [
     "cyclops",
     "npm",
-    "package",
-    "tasks"
+    "tasks",
+    "version"
   ],
   "author": "cyclops <oss@cyclo.ps>",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/cyclops-tasks/pkg.git"
+    "url": "git+ssh://git@github.com/cyclops-tasks/version.git"
   },
-  "main": "dist/pkg.js",
+  "main": "dist/version.js",
   "bin": {
-    "pkg-tasks": "./bin/pkg-tasks"
+    "version-tasks": "./bin/version-tasks"
   },
   "links": {
     "@dot-store/spawn": "../dot-store-spawn",
@@ -35,7 +35,7 @@
     "dot-store": "../../dot-store-core"
   },
   "license": "MIT",
-  "homepage": "https://github.com/cyclops-tasks/npm#readme",
+  "homepage": "https://github.com/cyclops-tasks/version#readme",
   "dependencies": {
     "@babel/runtime": "^7.1.2",
     "@dot-store/fs": "^1.4.0",

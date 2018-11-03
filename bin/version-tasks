@@ -3,7 +3,7 @@
 const dotEvent = require("dot-event").default
 const dotStore = require("dot-store").default
 const cyclops = require("cyclops").default
-const pkg = require("../dist/pkg").default
+const version = require("../dist/version").default
 
 const events = dotEvent()
 const store = dotStore(events)
@@ -13,9 +13,9 @@ cyclops({ events, store })
 events
   .cyclops({
     argv: process.argv.slice(2),
-    composer: pkg,
+    composer: version,
     path: process.cwd(),
-    task: "pkg-tasks",
+    task: "version-tasks",
   })
   .catch(function(e) {
     console.error(e)

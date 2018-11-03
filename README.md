@@ -1,10 +1,10 @@
-# pkg-tasks
+# version-tasks
 
-Package management tasks.
+Npm versioning tasks.
 
 ![packages](https://media.giphy.com/media/jYmGmDK3rKdkk/giphy.gif)
 
 ```bash
-npm install --save pkg-tasks
-pkg-tasks
+npm install --save version-tasks
+version-tasks
 ```
