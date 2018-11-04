@@ -46,10 +46,10 @@ beforeEach(async () => {
   })
 })
 
-async function run(option = "all") {
+async function run(argv = {}) {
   await store.set("argv", {
     _: ["version"],
-    [option]: true,
+    ...argv,
   })
 
   await Promise.all([
@@ -57,35 +57,6 @@ async function run(option = "all") {
     events.emit("startTask", { taskId: "project-b" }),
   ])
 }
-
-describe("all", () => {
-  test("waits for all steps", async () => {
-    await run()
-
-    expect(store.state.phase).toEqual({
-      bumpPublishVersions: {
-        count: 2,
-        title: "Bump publish versions",
-      },
-      findHighestVersions: {
-        count: 2,
-        title: "Find highest versions",
-      },
-      matchVersionsAndInstall: {
-        count: 2,
-        title: "Match versions and install",
-      },
-      matchVersionsAndPublish: {
-        count: 2,
-        title: "Match versions and publish",
-      },
-      readPackageJson: {
-        count: 2,
-        title: "Read package json",
-      },
-    })
-  })
-})
 
 describe("match", () => {
   test("upgrades shared package to highest version", async () => {
@@ -98,7 +69,7 @@ describe("match", () => {
       }
     )
 
-    await run("match")
+    await run()
 
     expect(args).toContainEqual({
       dependencies: { shared: "0.0.2" },
@@ -123,7 +94,7 @@ describe("match", () => {
       spawns.push(event.args)
     })
 
-    await run("match")
+    await run()
 
     expect(spawns).toContainEqual([
       {
@@ -151,7 +122,7 @@ describe("publish", () => {
       args.push(event.args[0].json)
     )
 
-    await run("publish")
+    await run({ publish: true })
 
     expect(args).toContainEqual({
       dependencies: { shared: "0.0.2" },
