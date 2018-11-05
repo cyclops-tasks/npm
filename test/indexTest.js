@@ -100,14 +100,6 @@ describe("match", () => {
       {
         args: ["install"],
         command: "npm",
-        options: { cwd: `${__dirname}/fixture/project-a` },
-      },
-    ])
-
-    expect(spawns).toContainEqual([
-      {
-        args: ["install"],
-        command: "npm",
         options: { cwd: `${__dirname}/fixture/project-b` },
       },
     ])
@@ -133,7 +125,7 @@ describe("publish", () => {
     expect(args).toContainEqual({
       dependencies: {
         "project-a": "0.0.2",
-        shared: "0.0.1",
+        shared: "0.0.2",
       },
       name: "project-b",
       version: "0.0.2",
