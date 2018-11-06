@@ -25,6 +25,7 @@
   "license": "MIT",
   "homepage": "https://github.com/cyclops-tasks/version#readme",
   "cyclops": {
+    "git-tasks": {},
     "version-tasks": {}
   },
   "starters": [
