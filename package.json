@@ -26,6 +26,7 @@
   "homepage": "https://github.com/cyclops-tasks/version#readme",
   "cyclops": {
     "git-tasks": {},
+    "starter-tasks": {},
     "version-tasks": {}
   },
   "starters": [
