@@ -52,9 +52,11 @@ async function run(argv = {}) {
     ...argv,
   })
 
+  events.setOp("cyclops")
+
   await Promise.all([
-    events.emit("startTask", { taskId: "project-a" }),
-    events.emit("startTask", { taskId: "project-b" }),
+    events.cyclops("startTask", { taskId: "project-a" }),
+    events.cyclops("startTask", { taskId: "project-b" }),
   ])
 }
 
