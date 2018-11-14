@@ -1,44 +1,27 @@
+import cyclops from "cyclops"
 import dotEvent from "dot-event"
 import dotStore from "dot-store"
 import version from "../dist/version"
 
 let events, store
 
+function cancelEvent({ event }) {
+  event.signal.cancel = true
+}
+
 beforeEach(async () => {
   events = dotEvent()
   store = dotStore(events)
 
-  version({ events, store })
-
-  await store.set("argv", { _: ["version"], all: true })
+  cyclops({ events, store })
 
   const spawn = {
     gitBehind: { out: "" },
     gitDirty: { code: 0 },
   }
 
-  await store.set("taskCount", 2)
-
-  await store.set("tasks.project-a", {
-    projectPath: `${__dirname}/fixture/project-a`,
-    projectPkgPath: `${__dirname}/fixture/project-a/package.json`,
-    taskId: "project-a",
-    taskIndex: 0,
-    taskLeader: true,
-  })
-
-  await store.set("tasks.project-b", {
-    projectPath: `${__dirname}/fixture/project-b`,
-    projectPkgPath: `${__dirname}/fixture/project-b/package.json`,
-    taskId: "project-b",
-    taskIndex: 0,
-  })
-
   await store.set("spawn.project-a", spawn)
   await store.set("spawn.project-b", spawn)
-
-  const cancelEvent = ({ event }) =>
-    (event.signal.cancel = true)
 
   events.onAny({
     "before.fs.writeJson": cancelEvent,
@@ -46,18 +29,13 @@ beforeEach(async () => {
   })
 })
 
-async function run(argv = {}) {
-  await store.set("argv", {
-    _: ["version"],
-    ...argv,
+async function run(...argv) {
+  await events.cyclops({
+    argv: argv.length ? argv : ["--all"],
+    composer: version,
+    path: `${__dirname}/fixture`,
+    task: "version-tasks",
   })
-
-  events.setOp("cyclops")
-
-  await Promise.all([
-    events.cyclops("startTask", { taskId: "project-a" }),
-    events.cyclops("startTask", { taskId: "project-b" }),
-  ])
 }
 
 describe("match", () => {
@@ -74,12 +52,14 @@ describe("match", () => {
     await run()
 
     expect(args).toContainEqual({
+      cyclops: { "version-tasks": {} },
       dependencies: { shared: "0.0.2" },
       name: "project-a",
       version: "0.0.1",
     })
 
     expect(args).toContainEqual({
+      cyclops: { "version-tasks": {} },
       dependencies: {
         "project-a": "0.0.1",
         shared: "0.0.2",
@@ -116,15 +96,17 @@ describe("publish", () => {
       args.push(event.args[0].json)
     )
 
-    await run({ publish: true })
+    await run("--publish")
 
     expect(args).toContainEqual({
+      cyclops: { "version-tasks": {} },
       dependencies: { shared: "0.0.2" },
       name: "project-a",
       version: "0.0.2",
     })
 
     expect(args).toContainEqual({
+      cyclops: { "version-tasks": {} },
       dependencies: {
         "project-a": "0.0.2",
         shared: "0.0.2",

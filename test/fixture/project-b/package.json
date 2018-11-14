@@ -4,5 +4,8 @@
   "dependencies": {
     "project-a": "0.0.1",
     "shared": "0.0.1"
+  },
+  "cyclops": {
+    "version-tasks": {}
   }
 }
