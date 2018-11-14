@@ -31,7 +31,7 @@ beforeEach(async () => {
 
 async function run(...argv) {
   await events.cyclops({
-    argv: argv.length ? argv : ["--all"],
+    argv,
     composer: version,
     path: `${__dirname}/fixture`,
     task: "version-tasks",
