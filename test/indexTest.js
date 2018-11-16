@@ -18,6 +18,9 @@ beforeEach(async () => {
         event.signal.cancel = true
       }
     },
+    "before.git": ({ event }) => {
+      event.signal.cancel = true
+    },
     "before.spawn": ({ event }) => {
       event.signal.cancel = true
     },
@@ -87,19 +90,13 @@ describe("publish", () => {
     const args = []
 
     const spawn = {
-      behind: false,
-      dirty: false,
+      behind: { result: false },
+      dirty: { result: false },
+      needsPublish: { result: true },
     }
 
-    store.set(
-      ["tasks", "project-a", "gitStatus", "results"],
-      spawn
-    )
-
-    store.set(
-      ["tasks", "project-b", "gitStatus", "results"],
-      spawn
-    )
+    store.set(["tasks", "project-a", "gitStatus"], spawn)
+    store.set(["tasks", "project-b", "gitStatus"], spawn)
 
     events.onAny("before.fs", ({ event, writeJson }) => {
       if (writeJson) {
