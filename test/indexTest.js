@@ -1,13 +1,10 @@
 import cyclops from "cyclops"
 import dotEvent from "dot-event"
 import dotStore from "dot-store"
+
 import version from "../dist/version"
 
 let events, store
-
-function cancelEvent({ event }) {
-  event.signal.cancel = true
-}
 
 beforeEach(async () => {
   events = dotEvent()
@@ -15,17 +12,15 @@ beforeEach(async () => {
 
   cyclops({ events, store })
 
-  const spawn = {
-    gitBehind: { out: "" },
-    gitDirty: { code: 0 },
-  }
-
-  await store.set("spawn.project-a", spawn)
-  await store.set("spawn.project-b", spawn)
-
   events.onAny({
-    "before.fs.writeJson": cancelEvent,
-    "before.spawn": cancelEvent,
+    "before.fs": ({ event, writeJson }) => {
+      if (writeJson) {
+        event.signal.cancel = true
+      }
+    },
+    "before.spawn": ({ event }) => {
+      event.signal.cancel = true
+    },
   })
 })
 
@@ -33,8 +28,8 @@ async function run(...argv) {
   await events.cyclops({
     argv,
     composer: version,
+    op: "version",
     path: `${__dirname}/fixture`,
-    task: "version-tasks",
   })
 }
 
@@ -42,24 +37,23 @@ describe("match", () => {
   test("upgrades shared package to highest version", async () => {
     const args = []
 
-    events.on(
-      "before.fs.writeJson.{taskId}",
-      ({ event }) => {
+    events.onAny("before.fs", ({ event, writeJson }) => {
+      if (writeJson) {
         args.push(event.args[0].json)
       }
-    )
+    })
 
     await run()
 
     expect(args).toContainEqual({
-      cyclops: { "version-tasks": {} },
+      cyclops: { version: { test: true } },
       dependencies: { shared: "0.0.2" },
       name: "project-a",
       version: "0.0.1",
     })
 
     expect(args).toContainEqual({
-      cyclops: { "version-tasks": {} },
+      cyclops: { version: { test: true } },
       dependencies: {
         "project-a": "0.0.1",
         shared: "0.0.2",
@@ -92,21 +86,38 @@ describe("publish", () => {
   test("bumps versions", async () => {
     const args = []
 
-    events.on("before.fs.writeJson.{taskId}", ({ event }) =>
-      args.push(event.args[0].json)
+    const spawn = {
+      behind: false,
+      dirty: false,
+    }
+
+    store.set(
+      ["tasks", "project-a", "gitStatus", "results"],
+      spawn
     )
+
+    store.set(
+      ["tasks", "project-b", "gitStatus", "results"],
+      spawn
+    )
+
+    events.onAny("before.fs", ({ event, writeJson }) => {
+      if (writeJson) {
+        args.push(event.args[0].json)
+      }
+    })
 
     await run("--publish")
 
     expect(args).toContainEqual({
-      cyclops: { "version-tasks": {} },
+      cyclops: { version: { test: true } },
       dependencies: { shared: "0.0.2" },
       name: "project-a",
       version: "0.0.2",
     })
 
     expect(args).toContainEqual({
-      cyclops: { "version-tasks": {} },
+      cyclops: { version: { test: true } },
       dependencies: {
         "project-a": "0.0.2",
         shared: "0.0.2",

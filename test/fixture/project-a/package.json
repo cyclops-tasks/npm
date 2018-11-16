@@ -5,6 +5,6 @@
     "shared": "0.0.2"
   },
   "cyclops": {
-    "version-tasks": {}
+    "version": { "test": true }
   }
 }
