@@ -13,8 +13,8 @@ beforeEach(async () => {
   cyclops({ events, store })
 
   events.onAny({
-    "before.fs": ({ event, writeJson }) => {
-      if (writeJson) {
+    "before.fs": ({ action, event }) => {
+      if (action === "writeJson") {
         event.signal.cancel = true
       }
     },
@@ -40,8 +40,8 @@ describe("match", () => {
   test("upgrades shared package to highest version", async () => {
     const args = []
 
-    events.onAny("before.fs", ({ event, writeJson }) => {
-      if (writeJson) {
+    events.onAny("before.fs", ({ action, event }) => {
+      if (action === "writeJson") {
         args.push(event.args[0].json)
       }
     })
@@ -98,8 +98,8 @@ describe("publish", () => {
     store.set(["tasks", "project-a", "gitStatus"], spawn)
     store.set(["tasks", "project-b", "gitStatus"], spawn)
 
-    events.onAny("before.fs", ({ event, writeJson }) => {
-      if (writeJson) {
+    events.onAny("before.fs", ({ action, event }) => {
+      if (action === "writeJson") {
         args.push(event.args[0].json)
       }
     })
