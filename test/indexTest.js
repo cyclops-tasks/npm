@@ -1,6 +1,6 @@
-import cyclops from "cyclops"
 import dotEvent from "dot-event"
 import dotStore from "dot-store"
+import dotTask from "dot-task"
 
 import version from "../dist/version"
 
@@ -10,7 +10,7 @@ beforeEach(async () => {
   events = dotEvent()
   store = dotStore(events)
 
-  cyclops({ events, store })
+  dotTask({ events, store })
 
   events.onAny({
     "before.fs": ({ action, event }) => {
@@ -27,9 +27,9 @@ beforeEach(async () => {
   })
 })
 
-async function run(...argv) {
-  await events.cyclops({
-    argv,
+async function run(...arg) {
+  await events.task({
+    arg,
     composer: version,
     op: "version",
     path: `${__dirname}/fixture`,
@@ -49,19 +49,19 @@ describe("match", () => {
     await run()
 
     expect(args).toContainEqual({
-      cyclops: { version: { test: true } },
       dependencies: { shared: "0.0.2" },
       name: "project-a",
+      operations: { version: { test: true } },
       version: "0.0.1",
     })
 
     expect(args).toContainEqual({
-      cyclops: { version: { test: true } },
       dependencies: {
         "project-a": "0.0.1",
         shared: "0.0.2",
       },
       name: "project-b",
+      operations: { version: { test: true } },
       version: "0.0.1",
     })
   })
@@ -107,19 +107,19 @@ describe("publish", () => {
     await run("--publish")
 
     expect(args).toContainEqual({
-      cyclops: { version: { test: true } },
       dependencies: { shared: "0.0.2" },
       name: "project-a",
+      operations: { version: { test: true } },
       version: "0.0.2",
     })
 
     expect(args).toContainEqual({
-      cyclops: { version: { test: true } },
       dependencies: {
         "project-a": "0.0.2",
         shared: "0.0.2",
       },
       name: "project-b",
+      operations: { version: { test: true } },
       version: "0.0.2",
     })
   })

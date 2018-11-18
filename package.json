@@ -1,30 +1,25 @@
 {
-  "name": "version-tasks",
+  "name": "dot-version",
   "version": "0.4.0",
-  "description": "Npm versioning tasks",
+  "description": "dot-event package version operation",
   "keywords": [
-    "cyclops",
+    "dot-event",
     "npm",
-    "tasks",
+    "operation",
     "version"
   ],
-  "author": "cyclops <oss@cyclo.ps>",
+  "author": "dot-event <oss@dot-event.io>",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/cyclops-tasks/version.git"
+    "url": "git+ssh://git@github.com/dot-event/version.git"
   },
   "main": "dist/version.js",
   "bin": {
-    "version-tasks": "./bin/version-tasks"
-  },
-  "links": {
-    "@dot-store/spawn": "../dot-store-spawn",
-    "dot-event": "../../dot-event",
-    "dot-store": "../../dot-store-core"
+    "dot-version": "./bin/dot-version"
   },
   "license": "MIT",
-  "homepage": "https://github.com/cyclops-tasks/version#readme",
-  "cyclops": {
+  "homepage": "https://github.com/dot-event/version#readme",
+  "operations": {
     "git": {},
     "link": {},
     "starter": {},
@@ -44,12 +39,14 @@
   ],
   "dependencies": {
     "@babel/runtime": "7.1.2",
-    "@dot-store/fs": "1.6.0",
-    "@dot-store/log": "0.9.0",
-    "@dot-store/spawn": "2.3.0",
-    "cyclops": "1.4.0",
+    "dot-event": "2.9.0",
+    "dot-store": "5.5.0",
+    "dot-fs-extra": "1.6.0",
+    "dot-spawn-git": "0.2.0",
+    "dot-logger": "0.9.0",
+    "dot-spawn": "2.3.0",
+    "dot-task": "1.5.0",
     "fs-extra": "7.0.1",
-    "git-tasks": "0.2.0",
     "ink": "0.5.1",
     "ink-checkbox-list": "1.3.1",
     "ink-spinner": "2.0.0",
@@ -66,8 +63,6 @@
     "@babel/preset-env": "7.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.1",
-    "dot-event": "2.9.0",
-    "dot-store": "5.5.0",
     "eslint": "5.8.0",
     "eslint-config-prettier": "3.1.0",
     "eslint-plugin-prettier": "3.0.0",

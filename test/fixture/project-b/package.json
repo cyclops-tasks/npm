@@ -5,7 +5,7 @@
     "project-a": "0.0.1",
     "shared": "0.0.1"
   },
-  "cyclops": {
+  "operations": {
     "version": { "test": true }
   }
 }

@@ -4,7 +4,7 @@
   "dependencies": {
     "shared": "0.0.2"
   },
-  "cyclops": {
+  "operations": {
     "version": { "test": true }
   }
 }
