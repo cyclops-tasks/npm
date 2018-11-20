@@ -79,7 +79,7 @@ describe("match", () => {
       {
         args: ["install"],
         command: "npm",
-        options: { cwd: `${__dirname}/fixture/project-b` },
+        cwd: `${__dirname}/fixture/project-b`,
       },
     ])
   })
