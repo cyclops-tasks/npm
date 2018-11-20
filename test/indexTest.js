@@ -2,7 +2,7 @@ import dotEvent from "dot-event"
 import dotStore from "@dot-event/store"
 import dotTask from "@dot-event/task"
 
-import version from "../dist/version"
+import dotVersion from "../dist/version"
 
 let events, store
 
@@ -11,6 +11,7 @@ beforeEach(async () => {
   store = dotStore({ events })
 
   dotTask({ events, store })
+  dotVersion({ events, store })
 
   events.onAny({
     "before.fs": ({ action, event }) => {
@@ -30,7 +31,6 @@ beforeEach(async () => {
 async function run(...argv) {
   await events.task({
     argv,
-    composer: version,
     op: "version",
     path: `${__dirname}/fixture`,
   })
