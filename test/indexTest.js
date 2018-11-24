@@ -13,18 +13,13 @@ beforeEach(async () => {
   dotTask({ events, store })
   dotVersion({ events, store })
 
+  const cancel = ({ event }) => (event.signal.cancel = true)
+
   events.onAny({
-    "before.fs": ({ action, event }) => {
-      if (action === "writeJson") {
-        event.signal.cancel = true
-      }
-    },
-    "before.git": ({ event }) => {
-      event.signal.cancel = true
-    },
-    "before.spawn": ({ event }) => {
-      event.signal.cancel = true
-    },
+    "before.fsWriteJson": cancel,
+    "before.gitCommit": cancel,
+    "before.gitStatus": cancel,
+    "before.spawn": cancel,
   })
 })
 
@@ -40,10 +35,8 @@ describe("match", () => {
   test("upgrades shared package to highest version", async () => {
     const args = []
 
-    events.onAny("before.fs", ({ action, event }) => {
-      if (action === "writeJson") {
-        args.push(event.args[0].json)
-      }
+    events.onAny("before.fsWriteJson", ({ event }) => {
+      args.push(event.args[0].json)
     })
 
     await run()
@@ -98,10 +91,8 @@ describe("publish", () => {
     store.set(["tasks", "project-a", "gitStatus"], spawn)
     store.set(["tasks", "project-b", "gitStatus"], spawn)
 
-    events.onAny("before.fs", ({ action, event }) => {
-      if (action === "writeJson") {
-        args.push(event.args[0].json)
-      }
+    events.onAny("before.fsWriteJson", ({ event }) => {
+      args.push(event.args[0].json)
     })
 
     await run("--publish")
