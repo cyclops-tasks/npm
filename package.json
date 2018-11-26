@@ -1,6 +1,6 @@
 {
   "name": "@dot-event/version",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "dot-event package version operation",
   "keywords": [
     "dot-event",
@@ -43,7 +43,7 @@
     "dot-event": "2.12.5",
     "@dot-event/store": "6.0.4",
     "@dot-event/fs": "1.11.5",
-    "@dot-event/git": "0.6.5",
+    "@dot-event/git": "0.6.6",
     "@dot-event/log": "0.13.1",
     "@dot-event/spawn": "2.6.5",
     "@dot-event/task": "1.11.6",
