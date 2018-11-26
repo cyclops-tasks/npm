@@ -1,17 +1,19 @@
+// Packages
 import dotEvent from "dot-event"
-import dotStore from "@dot-event/store"
 import dotTask from "@dot-event/task"
 
-import dotVersion from "../dist/version"
+// Helpers
+import dotVersion from "../"
 
-let events, store
+// Variables
+let events
 
+// Tests
 beforeEach(async () => {
   events = dotEvent()
-  store = dotStore({ events })
 
-  dotTask({ events, store })
-  dotVersion({ events, store })
+  dotTask({ events })
+  dotVersion({ events })
 
   const cancel = ({ event }) => (event.signal.cancel = true)
 
@@ -88,8 +90,8 @@ describe("publish", () => {
       needsPublish: { result: true },
     }
 
-    store.set(["tasks", "project-a", "gitStatus"], spawn)
-    store.set(["tasks", "project-b", "gitStatus"], spawn)
+    events.set(["tasks", "project-a", "gitStatus"], spawn)
+    events.set(["tasks", "project-b", "gitStatus"], spawn)
 
     events.onAny("before.fsWriteJson", ({ event }) => {
       args.push(event.args[0].json)
