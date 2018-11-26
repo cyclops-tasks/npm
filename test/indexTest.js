@@ -84,14 +84,21 @@ describe("publish", () => {
   test("bumps versions", async () => {
     const args = []
 
-    const spawn = {
-      behind: { result: false },
-      dirty: { result: false },
-      needsPublish: { result: true },
+    const results = {
+      behind: false,
+      dirty: false,
+      needsPublish: true,
     }
 
-    events.set(["tasks", "project-a", "gitStatus"], spawn)
-    events.set(["tasks", "project-b", "gitStatus"], spawn)
+    events.set(
+      ["tasks", "project-a", "gitStatus", "results"],
+      results
+    )
+
+    events.set(
+      ["tasks", "project-b", "gitStatus", "results"],
+      results
+    )
 
     events.onAny("before.fsWriteJson", ({ event }) => {
       args.push(event.args[0].json)
