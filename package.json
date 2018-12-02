@@ -1,6 +1,6 @@
 {
   "name": "@dot-event/version",
-  "version": "0.7.16",
+  "version": "0.7.17",
   "description": "dot-event package version operation",
   "keywords": [
     "dot-event",
@@ -42,11 +42,11 @@
     "@babel/runtime": "7.1.5",
     "dot-event": "2.12.6",
     "@dot-event/store": "6.0.5",
-    "@dot-event/fs": "1.11.12",
-    "@dot-event/git": "0.6.14",
+    "@dot-event/fs": "1.11.13",
+    "@dot-event/git": "0.6.15",
     "@dot-event/log": "0.13.2",
-    "@dot-event/spawn": "2.6.11",
-    "@dot-event/task": "1.11.11",
+    "@dot-event/spawn": "2.6.12",
+    "@dot-event/task": "1.11.12",
     "fs-extra": "7.0.1",
     "ink": "0.5.1",
     "ink-checkbox-list": "1.3.1",
