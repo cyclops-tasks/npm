@@ -60,24 +60,6 @@ describe("match", () => {
       version: "0.0.1",
     })
   })
-
-  test("spawns npm install", async () => {
-    const spawns = []
-
-    events.onAny("before.spawn", ({ event }) => {
-      spawns.push(event.args)
-    })
-
-    await run()
-
-    expect(spawns).toContainEqual([
-      {
-        args: ["install"],
-        command: "npm",
-        cwd: `${__dirname}/fixture/project-b`,
-      },
-    ])
-  })
 })
 
 describe("publish", () => {
