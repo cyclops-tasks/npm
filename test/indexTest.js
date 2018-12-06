@@ -20,7 +20,15 @@ beforeEach(async () => {
   events.onAny({
     "before.fsWriteJson": cancel,
     "before.gitCommit": cancel,
-    "before.gitStatus": cancel,
+    "before.gitStatus": ({ event }) => {
+      cancel({ event })
+
+      event.signal.returnValue = {
+        behind: false,
+        dirty: false,
+        needsPublish: true,
+      }
+    },
     "before.spawn": cancel,
   })
 })
@@ -65,22 +73,6 @@ describe("match", () => {
 describe("publish", () => {
   test("bumps versions", async () => {
     const args = []
-
-    const results = {
-      behind: false,
-      dirty: false,
-      needsPublish: true,
-    }
-
-    events.set(
-      ["tasks", "project-a", "gitStatus", "results"],
-      results
-    )
-
-    events.set(
-      ["tasks", "project-b", "gitStatus", "results"],
-      results
-    )
 
     events.onAny("before.fsWriteJson", ({ event }) => {
       args.push(event.args[0].json)
