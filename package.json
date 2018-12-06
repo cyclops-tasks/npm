@@ -43,7 +43,7 @@
     "dot-event": "2.12.6",
     "@dot-event/store": "6.0.5",
     "@dot-event/fs": "1.11.13",
-    "@dot-event/git": "0.6.18",
+    "@dot-event/git": "0.6.19",
     "@dot-event/log": "0.13.2",
     "@dot-event/spawn": "2.6.15",
     "@dot-event/task": "1.11.12",
