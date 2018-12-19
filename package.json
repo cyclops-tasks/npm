@@ -46,7 +46,7 @@
     "@dot-event/git": "0.6.31",
     "@dot-event/log": "0.13.5",
     "@dot-event/spawn": "2.6.27",
-    "@dot-event/task": "1.11.23",
+    "@dot-event/task": "1.11.24",
     "fs-extra": "7.0.1",
     "ink": "0.5.1",
     "ink-checkbox-list": "1.3.1",
