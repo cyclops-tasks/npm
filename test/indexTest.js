@@ -20,16 +20,18 @@ beforeEach(async () => {
   events.onAny({
     "before.fsWriteJson": cancel,
     "before.gitCommit": cancel,
-    "before.gitStatus": ({ event }) => {
-      cancel({ event })
+    "before.gitStatus": cancel,
+    "before.spawn": cancel,
+  })
 
-      event.signal.returnValue = {
+  events.onAny({
+    "before.gitStatus": async ({ props }) => {
+      await events.set([...props, "gitStatus", "results"], {
         behind: false,
         dirty: false,
         needsPublish: true,
-      }
+      })
     },
-    "before.spawn": cancel,
   })
 })
 
@@ -41,60 +43,31 @@ async function run(...argv) {
   })
 }
 
-describe("match", () => {
-  test("upgrades shared package to highest version", async () => {
-    const args = []
+test("bumps versions", async () => {
+  const args = []
 
-    events.onAny("before.fsWriteJson", ({ event }) => {
-      args.push(event.args[0].json)
-    })
-
-    await run()
-
-    expect(args).toContainEqual({
-      dependencies: { shared: "0.0.2" },
-      name: "project-a",
-      operations: { version: { test: true } },
-      version: "0.0.1",
-    })
-
-    expect(args).toContainEqual({
-      dependencies: {
-        "project-a": "0.0.1",
-        shared: "0.0.2",
-      },
-      name: "project-b",
-      operations: { version: { test: true } },
-      version: "0.0.1",
-    })
+  events.onAny("before.fsWriteJson", ({ event }) => {
+    args.push(event.args[0].json)
   })
-})
 
-describe("publish", () => {
-  test("bumps versions", async () => {
-    const args = []
+  await run()
 
-    events.onAny("before.fsWriteJson", ({ event }) => {
-      args.push(event.args[0].json)
-    })
+  expect(args).toContainEqual({
+    dependencies: { shared: "0.0.2" },
+    devDependencies: {},
+    name: "project-a",
+    operations: { version: { test: true } },
+    version: "0.0.2",
+  })
 
-    await run("--publish")
-
-    expect(args).toContainEqual({
-      dependencies: { shared: "0.0.2" },
-      name: "project-a",
-      operations: { version: { test: true } },
-      version: "0.0.2",
-    })
-
-    expect(args).toContainEqual({
-      dependencies: {
-        "project-a": "0.0.2",
-        shared: "0.0.2",
-      },
-      name: "project-b",
-      operations: { version: { test: true } },
-      version: "0.0.2",
-    })
+  expect(args).toContainEqual({
+    dependencies: {
+      "project-a": "0.0.2",
+      shared: "0.0.2",
+    },
+    devDependencies: {},
+    name: "project-b",
+    operations: { version: { test: true } },
+    version: "0.0.2",
   })
 })
