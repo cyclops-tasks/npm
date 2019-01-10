@@ -1,6 +1,6 @@
 {
   "name": "@dot-event/version",
-  "version": null,
+  "version": "0.7.46",
   "description": "dot-event package version operation",
   "keywords": [
     "dot-event",
